@@ -15,7 +15,7 @@ const (
  */
 func main() {
 	db.InitConfig(YOAWOENV)
-	route.InitRout()
+	route.InitRoute()
 	route.GroupRouter()
 	route.GlobalRout(":8080")   //测试端口
 }

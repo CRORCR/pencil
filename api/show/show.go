@@ -3,6 +3,7 @@ package show
 import (
 	"fmt"
 	"net/http"
+	"pencil/lib"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,6 +14,8 @@ import (
  * @create 2019/3/14
  */
 func Show(c *gin.Context) {
+	user := c.MustGet("claims").(*lib.CustomClaims)
+	fmt.Printf("获得jwt:%+v\n",user)
 	//获取字符串,给定默认值
 	firstname := c.DefaultQuery("firstname", "Guest")//填空没有默认值
 	lastname := c.Query("lastname")

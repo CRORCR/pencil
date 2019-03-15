@@ -1,7 +1,9 @@
 package route
 
 import (
+	"pencil/api/login"
 	"pencil/api/show"
+	"pencil/lib"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,10 +13,10 @@ import (
  * @author Ipencil
  * @create 2019/3/14
  */
-var g_Router *gin.Engine
+var _router *gin.Engine
 
 func getRouter() *gin.Engine {
-	return g_Router
+	return _router
 }
 
 func GlobalRout(strPort string) {
@@ -24,10 +26,21 @@ func GlobalRout(strPort string) {
 
 func GroupRouter() {
 	RouterGroupHello("pencil")
+	RouterGroupLogin()
+}
+
+func RouterGroupLogin() {
+	router := getRouter()
+	router.POST("/login", login.Login)
+
 }
 
 func RouterGroupHello(name string) {
+	//engine:=gin.Default() 默认初始化gin,然后去创建组函数
+	//engine.Group()
+	//Default返回一个引擎实例，其中已经附加了日志记录器和恢复中间件
 	router := getRouter().Group(name)
+	router.Use(lib.JWTAuth())
 	router.GET("/show", show.Show)
 	router.POST("/somePost", show.Posting)
 	router.PUT("/somePut", show.Putting)
@@ -39,13 +52,8 @@ func RouterGroupHello(name string) {
 	router.POST("/uploada", show.UploadAll)
 }
 
-func InitRout() {
-	g_Router = gin.Default()
-	//g_Router.Use(cors.New(cors.Config{
-	//	AllowOriginFunc:  func(origin string) bool { return true },
-	//	AllowMethods:     []string{"OPTIONS", "GET", "POST", "PUT", "DELETE", "PATCH"},
-	//	AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization"},
-	//	AllowCredentials: true,
-	//	MaxAge:           12 * time.Hour,
-	//}))
+func InitRoute() {
+	_router = gin.Default()
+	_router.Use(gin.Logger())   //添加日志,默认控制台
+	_router.Use(gin.Recovery()) //中间件,异常处理
 }
