@@ -36,13 +36,20 @@ func RouterGroupLogin() {
 	router.POST("/login", login.Login)
 
 }
+
+/**
+ * @desc   : 测试各种绑定
+ * @author : Ipencil
+ * @date   : 2019/3/15
+ */
 func RouterGroupBind() {
 	router := getRouter()
-	router.POST("/bind", bind.Band)
-	router.GET("/get", bind.GetBand)
+	router.POST("/bind_json_post", bind.BandJson)
+	router.GET("/bind_json_get", bind.BandJson)
+	router.POST("/bind_xml_post", bind.BandXml)
+	router.GET("/bind_xml_get", bind.BandXml)
 
 }
-
 func RouterGroupHello(name string) {
 	//engine:=gin.Default() 默认初始化gin,然后去创建组函数
 	//engine.Group()

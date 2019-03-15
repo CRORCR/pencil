@@ -24,8 +24,8 @@ func TestGet(t *testing.T) {
 	t.Run("login", login)
 	t.Run("somePost", somePost)
 	t.Run("get", get)
-	t.Run("band", band)
-	t.Run("bandd", bandd)
+	t.Run("band_json", band_json)
+	t.Run("band_xml", band_xml)
 
 	t.Run("put", put)
 	t.Run("patch", patch)
@@ -49,20 +49,28 @@ func login(t *testing.T) {
 func get(t *testing.T) {
 	t.SkipNow()
 	url := "http://localhost:8080/pencil/show?lastname=nht&pri[2]=3&list=[1,2,3,4]" //填空没有默认值
-	client := &http.Client{}
-	result := queryGet(t, client, url)
+	result := queryGet(t, url)
 	fmt.Println(result)
 }
 
-func band(t *testing.T) {
+func band_json(t *testing.T) {
 	//t.SkipNow()
-	url := "http://localhost:8080/get?name=lcq&password=1234" //填空没有默认值
-	client := &http.Client{}
-	result := queryGet(t, client, url)
+	/*get 请求*/
+	url := "http://localhost:8080/bind_json_get?name=李长全&password=123" //填空没有默认值
+	result := queryGet(t, url)
 	fmt.Println(result)
+	/*post 请求*/
+
+	//url := "http://localhost:8080/bind_json_post"
+	//params := map[string]string{
+	//	"name":     "李长全",
+	//	"password": "123", //这种形式也算有值,不会填充默认值
+	//}
+	//send := postSend(url, params)
+	//fmt.Println(send)
 }
 
-func bandd(t *testing.T) {
+func band_xml(t *testing.T) {
 	t.SkipNow()
 	url := "http://localhost:8080/bind"
 	params := map[string]string{
@@ -210,7 +218,8 @@ func postSend(url string,params map[string]string,)string{
 	return string(bytes)
 }
 
-func queryGet(t *testing.T, client *http.Client, url string) string {
+func queryGet(t *testing.T, url string) string {
+	client := &http.Client{}
 	request, err := http.NewRequest("GET", url, nil)
 	request.Header.Set("Authorization", LICHANGQUAN)
 	assertNil(t, "", err)
