@@ -1,6 +1,7 @@
 package route
 
 import (
+	"pencil/api/bind"
 	"pencil/api/login"
 	"pencil/api/show"
 	"pencil/lib"
@@ -27,11 +28,18 @@ func GlobalRout(strPort string) {
 func GroupRouter() {
 	RouterGroupHello("pencil")
 	RouterGroupLogin()
+	RouterGroupBind()
 }
 
 func RouterGroupLogin() {
 	router := getRouter()
 	router.POST("/login", login.Login)
+
+}
+func RouterGroupBind() {
+	router := getRouter()
+	router.POST("/bind", bind.Band)
+	router.GET("/get", bind.GetBand)
 
 }
 
@@ -54,6 +62,5 @@ func RouterGroupHello(name string) {
 
 func InitRoute() {
 	_router = gin.Default()
-	_router.Use(gin.Logger())   //添加日志,默认控制台
 	_router.Use(gin.Recovery()) //中间件,异常处理
 }
