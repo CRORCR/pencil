@@ -23,18 +23,20 @@ func GlobalRout(strPort string) {
 }
 
 func GroupRouter() {
-	RouterGroupHello("hello")
+	RouterGroupHello("pencil")
 }
 
-func RouterGroupHello(name string){
+func RouterGroupHello(name string) {
 	router := getRouter().Group(name)
-	router.GET("/show",  show.Show)
+	router.GET("/show", show.Show)
 	router.POST("/somePost", show.Posting)
 	router.PUT("/somePut", show.Putting)
-	router.DELETE("/someDelete", show.Deleting)
 	router.PATCH("/somePatch", show.Patching)
+	router.DELETE("/someDelete", show.Deleting)
 	router.HEAD("/someHead", show.Head)
 	router.OPTIONS("/someOptions", show.Options)
+	router.POST("/upload", show.UploadOne)
+	router.POST("/uploada", show.UploadAll)
 }
 
 func InitRout() {

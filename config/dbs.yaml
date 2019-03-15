@@ -16,28 +16,3 @@ localhost:
     db_pass: root
     max_conn: 5
     max_open: 5
-  #redis:
-    ip_port: 127.0.0.1:6379
-    password: ""
-test35:
-  #db:
-    db_user: root
-    db_home: 127.0.0.1
-    db_name: yoawo
-    db_pass: 123456
-    max_conn: 5
-    max_open: 5
-  #redis:
-    ip_port: 127.0.0.1:6379
-    password: 123456
-product:
-  #db:
-    db_user: "server"
-    db_home: "rm-2ze0vj2espbt2nfj7.mysql.rds.aliyuncs.com"
-    db_name: "dbtest"
-    db_pass: "b!Ac@e#e$a%R^57&Q*C(DF)F_A+S=E"
-    max_conn: 5
-    max_open: 5
-  #redis:
-    ip_port: "r-2ze2efb1366d8574.redis.rds.aliyuncs.com:6379"
-    password: "ab@1da4D$%^&*an*!a"
