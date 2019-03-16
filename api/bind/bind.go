@@ -12,8 +12,8 @@ import (
  * @create 2019/3/15
  */
 type User struct {
-	Name     string `form:"name" json:"name"`
-	Password string `form:"password" binding:"required"`
+	Name     string `xml:"name" form:"name" json:"name"`
+	Password string `xml:"password" form:"password"  json:"password"`
 }
 
 //绑定参数,需要加锁form,不管是get还是post请求都可以
@@ -30,11 +30,11 @@ func BandJson(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"result": user})
 }
 
+//绑定xml解析
 func BandXml(c *gin.Context) {
 	user := &User{}
-	if err := c.ShouldBindXML(user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	if err := c.BindXML(user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"bindXML:error": err.Error()})
 	}
 	c.JSON(http.StatusOK, gin.H{"result": user})
 	return

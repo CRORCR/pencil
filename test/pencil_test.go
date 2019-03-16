@@ -2,10 +2,12 @@ package test
 
 import (
 	"bytes"
+	"encoding/xml"
 	"fmt"
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
+	"pencil/api/bind"
 	"testing"
 )
 
@@ -53,8 +55,9 @@ func get(t *testing.T) {
 	fmt.Println(result)
 }
 
+//json客户端发送数据
 func band_json(t *testing.T) {
-	//t.SkipNow()
+	t.SkipNow()
 	/*get 请求*/
 	url := "http://localhost:8080/bind_json_get?name=李长全&password=123" //填空没有默认值
 	result := queryGet(t, url)
@@ -70,14 +73,14 @@ func band_json(t *testing.T) {
 	//fmt.Println(send)
 }
 
+//xml 客户端发送数据
 func band_xml(t *testing.T) {
 	t.SkipNow()
-	url := "http://localhost:8080/bind"
-	params := map[string]string{
-		"name":     "lcq",
-		"password": "1234", //这种形式也算有值,不会填充默认值
-	}
-	send := postSend(url, params)
+	url := "http://localhost:8080/bind_xml_post"
+	user:=bind.User{}
+	user.Name="lcq"
+	user.Password="123"
+	send := postSendCopy(url, user)
 	fmt.Println(send)
 }
 
@@ -197,6 +200,23 @@ func option(t *testing.T, client *http.Client, url string) string {
 	t.Log("result:", string(bytes))
 	return string(bytes)
 }
+
+
+func postSendCopy(url string,params bind.User)string{
+	client := &http.Client{}
+	body := &bytes.Buffer{}
+	byt,err:=xml.Marshal(params)
+	fmt.Println("err:",err)
+	body.Write(byt)
+	request, _ := http.NewRequest("POST", url, body)
+	request.Header.Set("Authorization", LICHANGQUAN)
+	request.Header.Set("Content-Type", "application/xml")
+	response, _ := client.Do(request)
+	defer func() { response.Body.Close() }()
+	bytes, _ := ioutil.ReadAll(response.Body)
+	return string(bytes)
+}
+
 
 func postSend(url string,params map[string]string,)string{
 	client := &http.Client{}

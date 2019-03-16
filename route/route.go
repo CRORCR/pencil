@@ -50,6 +50,7 @@ func RouterGroupBind() {
 	router.GET("/bind_xml_get", bind.BandXml)
 
 }
+
 func RouterGroupHello(name string) {
 	//engine:=gin.Default() 默认初始化gin,然后去创建组函数
 	//engine.Group()
