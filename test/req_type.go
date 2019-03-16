@@ -6,6 +6,36 @@ import (
 	"testing"
 )
 
+//get或者post可以发送map结构和数组
+
+const LICHANGQUAN = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6MCwiTmFtZSI6IuadjumVv-WFqCIsIlBhc3N3b3JkIjoiIiwiU2hhcmUiOiIxMjM0NTYiLCJJY29uIjoiIiwiZXhwIjoxNTYwNDE2MDU2LCJpc3MiOiJwZW5jaWwiLCJuYmYiOjE1NTI2NDAwNTZ9.uBqblo8ENAsf3yNyCUPw2oPIK5Pt98GPfkPp2ewgjJs`
+
+
+/**
+ * @desc    所有的请求类型 测试
+ * @author Ipencil
+ * @create 2019/3/16
+ */
+func reqType(t *testing.T) {
+	t.SkipNow()
+	t.Run("login", login)
+	t.Run("get", get)
+	t.Run("somePost", somePost)
+	t.Run("put", put)
+	t.Run("patch", patch)
+	t.Run("delete", delete)
+	t.Run("head", head)
+	t.Run("someOptions", someOptions)
+	t.Run("any_start", any_start)
+}
+
+func any_start(t *testing.T) {
+	t.SkipNow()
+	url := "http://localhost:8080/anystart?name=李长全&address=安徽" //填空没有默认值
+	result := queryGet(t, url)
+	fmt.Println(result)
+}
+
 /**
  * @desc   get post delete 等请求类型
  * @author Ipencil

@@ -5,6 +5,9 @@ import (
 	"pencil/api/bind"
 	"testing"
 )
+/*
+any请求方式,支持如下几种:GET \ POST \ PUT \ PATCH \ HEAD \ OPTIONS \ DELETE \ CONNECT \ TRACE
+*/
 
 /**
  * @desc   绑定json \ xml 测试     验证器测试
@@ -12,8 +15,10 @@ import (
  * @create 2019/3/16
  */
 func band(t *testing.T) {
+	t.SkipNow()
+	t.Run("band_json", band_json) //json解析的接口,get和post使用同一个,都支持,使用Any请求方式
+	t.Run("band_json_post", band_json_post)
 	t.Run("band_xml", band_xml)
-	t.Run("band_json", band_json)
 	t.Run("books", books)
 }
 
@@ -21,18 +26,21 @@ func band(t *testing.T) {
 func band_json(t *testing.T) {
 	t.SkipNow()
 	/*get 请求*/
-	url := "http://localhost:8080/bind_json_get?name=李长全&password=123" //填空没有默认值
+	url := "http://localhost:8080/bind_json?name=李长全&password=123" //填空没有默认值
 	result := queryGet(t, url)
 	fmt.Println(result)
-	/*post 请求*/
+}
 
-	//url := "http://localhost:8080/bind_json_post"
-	//params := map[string]string{
-	//	"name":     "李长全",
-	//	"password": "123", //这种形式也算有值,不会填充默认值
-	//}
-	//send := postSend(url, params)
-	//fmt.Println(send)
+/*post 请求*/
+func band_json_post(t *testing.T){
+	t.SkipNow()
+	url := "http://localhost:8080/bind_json"
+	params := map[string]string{
+		"name":     "李长全",
+		"password": "123", //这种形式也算有值,不会填充默认值
+	}
+	send := postSend(url, params)
+	fmt.Println(send)
 }
 
 //xml 客户端发送数据

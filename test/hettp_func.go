@@ -10,24 +10,6 @@ import (
 	"testing"
 )
 
-const LICHANGQUAN = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6MCwiTmFtZSI6IuadjumVv-WFqCIsIlBhc3N3b3JkIjoiIiwiU2hhcmUiOiIxMjM0NTYiLCJJY29uIjoiIiwiZXhwIjoxNTYwNDE2MDU2LCJpc3MiOiJwZW5jaWwiLCJuYmYiOjE1NTI2NDAwNTZ9.uBqblo8ENAsf3yNyCUPw2oPIK5Pt98GPfkPp2ewgjJs`
-
-/**
- * @desc    所有的请求类型 测试
- * @author Ipencil
- * @create 2019/3/16
- */
-
-func reqType(t *testing.T) {
-	t.Run("get", get)
-	t.Run("put", put)
-	t.Run("patch", patch)
-	t.Run("delete", delete)
-	t.Run("head", head)
-	t.Run("someOptions", someOptions)
-	t.Run("somePost", somePost)
-}
-
 func puts(t *testing.T, client *http.Client, url string) string {
 	request, err := http.NewRequest("PUT", url, nil)
 	request.Header.Set("Authorization", LICHANGQUAN)

@@ -7,7 +7,6 @@ import (
 	"pencil/api/login"
 	"pencil/api/show"
 	"pencil/lib"
-	"transformat/seckill/proxy/route"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -49,12 +48,10 @@ func RouterGroupLogin() {
  */
 func RouterGroupBind() {
 	router := getRouter()
-	router.POST("/bind_json_post", bind.BandJson)
-	router.GET("/bind_json_get", bind.BandJson)
-	router.POST("/bind_xml_post", bind.BandXml)
-	router.GET("/bind_xml_get", bind.BandXml)
+	router.Any("/bind_json", bind.BandJson)//各种请求都可以支持
+	router.Any("/bind_xml", bind.BandXml)//各种请求都可以支持
 	router.GET("/bookable", confirm.GetBookable)
-	router.Any("/any_start", any.StartPage)
+	router.GET("/anystart", any.StartPage)
 }
 
 func RouterGroupHello(name string) {
