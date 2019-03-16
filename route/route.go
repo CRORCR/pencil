@@ -4,6 +4,7 @@ import (
 	"pencil/api/any"
 	"pencil/api/bind"
 	"pencil/api/confirm"
+	"pencil/api/query"
 	"pencil/api/login"
 	"pencil/api/show"
 	"pencil/lib"
@@ -50,6 +51,7 @@ func RouterGroupBind() {
 	router := getRouter()
 	router.Any("/bind_json", bind.BandJson)//各种请求都可以支持
 	router.Any("/bind_xml", bind.BandXml)//各种请求都可以支持
+	router.POST("/query", query.StartPage)
 	router.GET("/bookable", confirm.GetBookable)
 	router.GET("/anystart", any.StartPage)
 }

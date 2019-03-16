@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
-	"pencil/api/bind"
 	"testing"
 )
 
@@ -74,7 +73,7 @@ func option(t *testing.T, client *http.Client, url string) string {
 	return string(bytes)
 }
 
-func postSendCopy(url string, params bind.User) string {
+func postSendCopy(url string, params interface{}) string {
 	client := &http.Client{}
 	body := &bytes.Buffer{}
 	byt, err := xml.Marshal(params)
