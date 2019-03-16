@@ -9,7 +9,7 @@ import (
 )
 
 /**
- * @desc    TODO
+ * @desc    get及post解析参数,默认值,map,数组获取
  * @author Ipencil
  * @create 2019/3/14
  */

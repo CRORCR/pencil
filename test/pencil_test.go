@@ -75,7 +75,7 @@ func band_json(t *testing.T) {
 
 //xml 客户端发送数据
 func band_xml(t *testing.T) {
-	t.SkipNow()
+	//t.SkipNow()
 	url := "http://localhost:8080/bind_xml_post"
 	user:=bind.User{}
 	user.Name="lcq"
@@ -206,7 +206,9 @@ func postSendCopy(url string,params bind.User)string{
 	client := &http.Client{}
 	body := &bytes.Buffer{}
 	byt,err:=xml.Marshal(params)
-	fmt.Println("err:",err)
+	if err!=nil{
+		return ""
+	}
 	body.Write(byt)
 	request, _ := http.NewRequest("POST", url, body)
 	request.Header.Set("Authorization", LICHANGQUAN)

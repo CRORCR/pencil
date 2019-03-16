@@ -11,7 +11,7 @@ import (
 )
 
 /**
- * @desc    登录
+ * @desc    登录,jwt
  * @author Ipencil
  * @create 2019/3/15
  */

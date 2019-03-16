@@ -12,7 +12,7 @@ import (
 )
 
 /**
- * @desc 单文件上传
+ * @desc 单文件上传 \ 多文件上传  图片
  * @author Ipencil
  * @create 2019/3/15
  */

@@ -7,7 +7,7 @@ import (
 )
 
 /**
- * @desc    TODO
+ * @desc    json和xml绑定
  * @author Ipencil
  * @create 2019/3/15
  */
@@ -35,6 +35,7 @@ func BandXml(c *gin.Context) {
 	user := &User{}
 	if err := c.BindXML(user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"bindXML:error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"result": user})
 	return
