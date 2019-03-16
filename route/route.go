@@ -6,6 +6,7 @@ import (
 	"pencil/api/bind"
 	"pencil/api/confirm"
 	"pencil/api/form"
+	"pencil/api/index"
 	"pencil/api/login"
 	"pencil/api/query"
 	"pencil/api/secureJSON"
@@ -37,6 +38,7 @@ func GroupRouter() {
 	RouterGroupHello("pencil")
 	RouterGroupLogin()
 	RouterGroupBind()
+	RouterGroupIndex() //模板渲染
 }
 
 func RouterGroupLogin() {
@@ -45,6 +47,10 @@ func RouterGroupLogin() {
 
 }
 
+func RouterGroupIndex() {
+	router := getRouter()
+	router.GET("/index", index.Index)
+}
 /**
  * @desc   : 测试各种绑定
  * @author : Ipencil
@@ -93,6 +99,8 @@ func InitRoute() {
 	// StaticFile 是加载单个文件 StaticFS 是加载一个完整的目录资源
 	_router.StaticFS("/more_static", http.Dir("my_file_system"))
 	_router.StaticFile("/pencil.go", "K:/workspace/src/pencil/pencil.go")
+	//模板渲染
+	_router.LoadHTMLGlob("templates/*")
 }
 
 /*
