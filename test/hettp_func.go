@@ -90,6 +90,29 @@ func postSendCopy(url string, params interface{}) string {
 	return string(bytes)
 }
 
+func postSendList(url string, params map[string][]string) string {
+	client := &http.Client{}
+	body := &bytes.Buffer{}
+	writer := multipart.NewWriter(body)
+
+	for key, value := range params {
+		for _, val := range value {
+			_ = writer.WriteField(key, val)
+		}
+	}
+	writer.Close()
+
+	request, _ := http.NewRequest("POST", url, body)
+	request.Header.Set("Content-Type", writer.FormDataContentType())
+	request.Header.Set("Authorization", LICHANGQUAN)
+
+	response, _ := client.Do(request)
+	defer func() { response.Body.Close() }()
+	bytes, _ := ioutil.ReadAll(response.Body)
+	return string(bytes)
+}
+
+
 func postSend(url string, params map[string]string) string {
 	client := &http.Client{}
 	body := &bytes.Buffer{}

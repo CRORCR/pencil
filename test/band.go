@@ -20,15 +20,29 @@ xml格式数据和json格式数据传递的时候,可以通过 Content-Type 检�
  * @create 2019/3/16
  */
 func band(t *testing.T) {
-	t.SkipNow()
+	//t.SkipNow()
 	t.Run("band_json", band_json) //json解析的接口,get和post使用同一个,都支持,使用Any请求方式
 	t.Run("band_json_post", band_json_post) //支持get和post方式
 	t.Run("band_xml", band_xml) //支持get和post方式
 	t.Run("books", books) //自定义验证器
 	t.Run("query", queryJson)  //支持json和xml两种格式
 	t.Run("query", queryXML)  //支持json和xml两种格式
+	t.Run("forms", forms)  //支持json和xml两种格式
 }
 
+
+//json客户端发送数据  数组发送,一般复选框能够用上
+func forms(t *testing.T) {
+	t.SkipNow()
+	url := "http://localhost:8080/forms"
+	params := map[string][]string{
+		"colors[]":     {
+			"wo","ai","ni",
+		},
+	}
+	send := postSendList(url, params)
+	fmt.Println(send)
+}
 //json客户端发送数据
 func queryJson(t *testing.T) {
 	t.SkipNow()

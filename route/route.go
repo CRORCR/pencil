@@ -4,8 +4,9 @@ import (
 	"pencil/api/any"
 	"pencil/api/bind"
 	"pencil/api/confirm"
-	"pencil/api/query"
+	"pencil/api/form"
 	"pencil/api/login"
+	"pencil/api/query"
 	"pencil/api/show"
 	"pencil/lib"
 
@@ -54,6 +55,7 @@ func RouterGroupBind() {
 	router.POST("/query", query.StartPage)
 	router.GET("/bookable", confirm.GetBookable)
 	router.GET("/anystart", any.StartPage)
+	router.Any("/forms", form.FormHandler)
 }
 
 func RouterGroupHello(name string) {
