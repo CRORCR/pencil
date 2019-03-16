@@ -8,6 +8,7 @@ import (
 const (
 	YOAWOENV = "localhost"
 )
+
 /**
  * @desc    TODO
  * @author Ipencil
@@ -17,5 +18,5 @@ func main() {
 	db.InitConfig(YOAWOENV)
 	route.InitRoute()
 	route.GroupRouter()
-	route.GlobalRout(":8080")   //测试端口
+	route.GlobalRout(":8080") //测试端口
 }

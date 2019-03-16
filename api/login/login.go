@@ -44,7 +44,7 @@ func createJwt(c *gin.Context, name, password string) {
 		StandardClaims: jwt.StandardClaims{
 			NotBefore: time.Now().Unix(),            // 签名生效时间
 			ExpiresAt: time.Now().Unix() + 86400*90, // 过期时间 90天
-			Issuer:    "pencil",                    //签名的发行者
+			Issuer:    "pencil",                     //签名的发行者
 		},
 	}
 	token, err := j.CreateToken(claims)

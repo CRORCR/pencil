@@ -73,9 +73,10 @@ type CustomClaims struct {
 	jwt.StandardClaims
 }
 
-func GetSign()[]byte{
+func GetSign() []byte {
 	return []byte("changquanLi")
 }
+
 // 新建一个jwt实例
 func NewJWT() *JWT {
 	return &JWT{

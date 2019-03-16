@@ -15,15 +15,14 @@ import (
 )
 
 /**
- * @desc    TODO
+ * @desc    多文件上传测试
  * @author Ipencil
  * @create 2019/3/15
  */
 func upload(t *testing.T) {
 	t.SkipNow()
 	client := &http.Client{}
-	params := map[string]string{
-	}
+	params := map[string]string{}
 
 	upurl := "http://localhost:8080/pencil/upload"
 	request, e := newfileUploadRequest(upurl, params)
@@ -39,11 +38,10 @@ func upload(t *testing.T) {
 }
 
 //多图片上传
-func uploada(t *testing.T) {
+func upload_more(t *testing.T) {
 	t.SkipNow()
 	client := &http.Client{}
-	params := map[string]string{
-	}
+	params := map[string]string{}
 
 	upurl := "http://localhost:8080/pencil/uploada"
 	request, e := newfileUploadRequest(upurl, params)
