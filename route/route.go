@@ -49,8 +49,18 @@ func RouterGroupLogin() {
 
 func RouterGroupIndex() {
 	router := getRouter()
-	router.GET("/index/get", index.Index)
+	router.GET("/index/get", index.Index) //模板渲染
+	router.GET("/redir", index.Redirct)   //重定向
+	//路由重定向
+	router.GET("/redirhand",
+		func(c *gin.Context) {
+			c.Request.URL.Path = "/hello"
+			router.HandleContext(c)
+		})
+	router.GET("/hello", index.Hello)
+
 }
+
 /**
  * @desc   : 测试各种绑定
  * @author : Ipencil
@@ -58,8 +68,8 @@ func RouterGroupIndex() {
  */
 func RouterGroupBind() {
 	router := getRouter()
-	router.Any("/bind_json", bind.BandJson)//各种请求都可以支持
-	router.Any("/bind_xml", bind.BandXml)//各种请求都可以支持
+	router.Any("/bind_json", bind.BandJson) //各种请求都可以支持
+	router.Any("/bind_xml", bind.BandXml)   //各种请求都可以支持
 	router.POST("/query", query.StartPage)
 	router.GET("/bookable", confirm.GetBookable)
 	router.GET("/anystart", any.StartPage)
