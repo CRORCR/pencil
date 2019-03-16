@@ -49,7 +49,7 @@ func RouterGroupLogin() {
 
 func RouterGroupIndex() {
 	router := getRouter()
-	router.GET("/index", index.Index)
+	router.GET("/index/get", index.Index)
 }
 /**
  * @desc   : 测试各种绑定
@@ -100,7 +100,8 @@ func InitRoute() {
 	_router.StaticFS("/more_static", http.Dir("my_file_system"))
 	_router.StaticFile("/pencil.go", "K:/workspace/src/pencil/pencil.go")
 	//模板渲染
-	_router.LoadHTMLGlob("templates/*")
+	//_router.LoadHTMLGlob("templates/*")
+	_router.LoadHTMLGlob("templates/**/*")
 }
 
 /*

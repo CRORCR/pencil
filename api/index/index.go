@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
-
+//http://localhost:8080/index/get
 /**
  * @desc    TODO
  * @author Ipencil
