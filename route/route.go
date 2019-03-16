@@ -7,6 +7,7 @@ import (
 	"pencil/api/form"
 	"pencil/api/login"
 	"pencil/api/query"
+	"pencil/api/secureJSON"
 	"pencil/api/show"
 	"pencil/lib"
 
@@ -56,6 +57,8 @@ func RouterGroupBind() {
 	router.GET("/bookable", confirm.GetBookable)
 	router.GET("/anystart", any.StartPage)
 	router.Any("/forms", form.FormHandler)
+	router.SecureJsonPrefix("yoawo\n") //为所有返回json添加头信息
+	router.GET("/someJSON", secureJSON.Secure)
 }
 
 func RouterGroupHello(name string) {

@@ -28,8 +28,17 @@ func band(t *testing.T) {
 	t.Run("query", queryJson)  //支持json和xml两种格式
 	t.Run("query", queryXML)  //支持json和xml两种格式
 	t.Run("forms", forms)  //支持json和xml两种格式
+	t.Run("someJSON", someJSON)  //支持json和xml两种格式
 }
 
+//安全json传输
+func someJSON(t *testing.T) {
+	t.SkipNow()
+	/*get 请求*/
+	url := "http://localhost:8080/someJSON" //填空没有默认值
+	result := queryGet(t, url)
+	fmt.Println(result)
+}
 
 //json客户端发送数据  数组发送,一般复选框能够用上
 func forms(t *testing.T) {
@@ -43,6 +52,7 @@ func forms(t *testing.T) {
 	send := postSendList(url, params)
 	fmt.Println(send)
 }
+
 //json客户端发送数据
 func queryJson(t *testing.T) {
 	t.SkipNow()
