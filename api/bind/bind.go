@@ -7,7 +7,7 @@ import (
 )
 
 /**
- * @desc    json和xml绑定
+ * @desc    json
  * @author Ipencil
  * @create 2019/3/15
  */

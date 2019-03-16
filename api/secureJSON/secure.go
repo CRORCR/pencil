@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
+
 /*
 可以使用安全的json传输,其实就是添加一些干扰信息,而且只能添加头信息,真是没啥卵用
 router.SecureJsonPrefix("yoawo\n") //为所有返回json添加头信息
@@ -16,8 +17,8 @@ c.SecureJSON(http.StatusOK, names)
  * @create 2019/3/16
  */
 
- func Secure(c *gin.Context){
-		 names := []string{"lena", "austin", "foo"}
-		 // Will output  :   yoawo;["lena","austin","foo"]
-		 c.SecureJSON(http.StatusOK, names)
- }
+func Secure(c *gin.Context) {
+	names := []string{"lena", "austin", "foo"}
+	// Will output  :   yoawo;["lena","austin","foo"]
+	c.SecureJSON(http.StatusOK, names)
+}

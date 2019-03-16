@@ -1,6 +1,7 @@
 package route
 
 import (
+	"net/http"
 	"pencil/api/any"
 	"pencil/api/bind"
 	"pencil/api/confirm"
@@ -79,10 +80,22 @@ func RouterGroupHello(name string) {
 }
 
 func InitRoute() {
+	//首先需要是生成一个Engine 这是gin的核心 默认带有Logger 和 Recovery 两个中间件
 	_router = gin.Default()
 	_router.Use(gin.Recovery()) //中间件,异常处理
 	//验证器先注册   confirm的时候,用了验证器
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		v.RegisterValidation("bookabledate", confirm.BookableDate) //存储是以map形式存的,存储在内存中
 	}
+
+	//这些目录下资源是可以随时更新，而不用重新启动程序
+	_router.Static("/assets", "./assets")
+	// StaticFile 是加载单个文件 StaticFS 是加载一个完整的目录资源
+	_router.StaticFS("/more_static", http.Dir("my_file_system"))
+	_router.StaticFile("/pencil.go", "K:/workspace/src/pencil/pencil.go")
 }
+
+/*
+http://localhost:8080/assets/doc.html  静态文件内容,可以随意访问
+
+ */

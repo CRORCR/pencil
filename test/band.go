@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 )
+
 /*
 
 any请求方式,支持如下几种:GET \ POST \ PUT \ PATCH \ HEAD \ OPTIONS \ DELETE \ CONNECT \ TRACE
@@ -21,14 +22,14 @@ xml格式数据和json格式数据传递的时候,可以通过 Content-Type 检�
  */
 func band(t *testing.T) {
 	//t.SkipNow()
-	t.Run("band_json", band_json) //json解析的接口,get和post使用同一个,都支持,使用Any请求方式
+	t.Run("band_json", band_json)           //json解析的接口,get和post使用同一个,都支持,使用Any请求方式
 	t.Run("band_json_post", band_json_post) //支持get和post方式
-	t.Run("band_xml", band_xml) //支持get和post方式
-	t.Run("books", books) //自定义验证器
-	t.Run("query", queryJson)  //支持json和xml两种格式
-	t.Run("query", queryXML)  //支持json和xml两种格式
-	t.Run("forms", forms)  //支持json和xml两种格式
-	t.Run("someJSON", someJSON)  //支持json和xml两种格式
+	t.Run("band_xml", band_xml)             //支持get和post方式
+	t.Run("books", books)                   //自定义验证器
+	t.Run("query", queryJson)               //支持json和xml两种格式
+	t.Run("query", queryXML)                //支持json和xml两种格式
+	t.Run("forms", forms)                   //支持json和xml两种格式
+	t.Run("someJSON", someJSON)             //支持json和xml两种格式
 }
 
 //安全json传输
@@ -45,8 +46,8 @@ func forms(t *testing.T) {
 	t.SkipNow()
 	url := "http://localhost:8080/forms"
 	params := map[string][]string{
-		"colors[]":     {
-			"wo","ai","ni",
+		"colors[]": {
+			"wo", "ai", "ni",
 		},
 	}
 	send := postSendList(url, params)
@@ -59,7 +60,7 @@ func queryJson(t *testing.T) {
 	url := "http://localhost:8080/query"
 	params := map[string]string{
 		"name":     "李长全",
-		"address": "123",
+		"address":  "123",
 		"birthday": "1992-08-25  12:12:12",
 	}
 	send := postSend(url, params)
@@ -70,10 +71,10 @@ func queryJson(t *testing.T) {
 func queryXML(t *testing.T) {
 	t.SkipNow()
 	url := "http://localhost:8080/query"
-	per :=query.Person{}
+	per := query.Person{}
 	per.Name = "lcq"
 	per.Address = "123"
-	per.Birthday=time.Now()
+	per.Birthday = time.Now()
 	send := postSendCopy(url, per)
 	fmt.Println(send)
 }
@@ -88,7 +89,7 @@ func band_json(t *testing.T) {
 }
 
 /*post 请求*/
-func band_json_post(t *testing.T){
+func band_json_post(t *testing.T) {
 	t.SkipNow()
 	url := "http://localhost:8080/bind_json"
 	params := map[string]string{
