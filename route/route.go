@@ -5,6 +5,7 @@ import (
 	"pencil/api/any"
 	"pencil/api/bind"
 	"pencil/api/confirm"
+	"pencil/api/cookie"
 	"pencil/api/filter"
 	"pencil/api/form"
 	"pencil/api/index"
@@ -41,6 +42,7 @@ func GroupRouter() {
 	RouterGroupBind()
 	RouterGroupIndex() //模板渲染
 	RouterGroupFilter()
+	RouterGroupCookie()
 }
 
 func RouterGroupLogin() {
@@ -52,6 +54,12 @@ func RouterGroupFilter() {
 	router := getRouter()
 	router.Use(filter.Logger()) //加载中间件
 	router.GET("/filter",filter.Filter)
+}
+
+//中间件
+func RouterGroupCookie() {
+	router := getRouter()
+	router.GET("/cook",cookie.Cookie)
 }
 
 func RouterGroupIndex() {

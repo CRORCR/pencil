@@ -17,7 +17,7 @@ const LICHANGQUAN = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6MCwiTmFtZSI6Iu
  * @create 2019/3/16
  */
 func reqType(t *testing.T) {
-	t.SkipNow()
+	//t.SkipNow()
 	t.Run("login", login)
 	t.Run("get", get)
 	t.Run("somePost", somePost)
