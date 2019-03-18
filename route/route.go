@@ -5,6 +5,7 @@ import (
 	"pencil/api/any"
 	"pencil/api/bind"
 	"pencil/api/confirm"
+	"pencil/api/filter"
 	"pencil/api/form"
 	"pencil/api/index"
 	"pencil/api/login"
@@ -39,12 +40,18 @@ func GroupRouter() {
 	RouterGroupLogin()
 	RouterGroupBind()
 	RouterGroupIndex() //模板渲染
+	RouterGroupFilter()
 }
 
 func RouterGroupLogin() {
 	router := getRouter()
 	router.POST("/login", login.Login)
-
+}
+//中间件
+func RouterGroupFilter() {
+	router := getRouter()
+	router.Use(filter.Logger()) //加载中间件
+	router.GET("/filter",filter.Filter)
 }
 
 func RouterGroupIndex() {
@@ -68,7 +75,8 @@ func RouterGroupIndex() {
  */
 func RouterGroupBind() {
 	router := getRouter()
-	router.Any("/bind_json", bind.BandJson) //各种请求都可以支持
+	router.Any("/bind_json", bind.BandJson) //各种请求都可以支持,不支持多次序列化
+	router.POST("/bandbind", bind.BandJsonBind) //各种请求都可以支持,并且可以支持多次使用,多个if else
 	router.Any("/bind_xml", bind.BandXml)   //各种请求都可以支持
 	router.POST("/query", query.StartPage)
 	router.GET("/bookable", confirm.GetBookable)

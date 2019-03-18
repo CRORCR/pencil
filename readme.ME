@@ -1,0 +1,17 @@
+gin可以将静态文件打包到可执行程序中
+
+般通过调用c.Request.Body方法绑定数据，但不能多次调用这个方法。(ShouldBind)
+为此，要想多次绑定，需要使用c.ShouldBindBodyWith.
+if errA := c.ShouldBindBodyWith(&objA, binding.JSON); errA == nil {
+    c.String(http.StatusOK, `the body should be formA`)
+} else if  errB := c.ShouldBindBodyWith(&objB, binding.JSON); errB == nil {
+    c.String(http.StatusOK, `the body should be formB JSON`)
+}
+c.ShouldBindBodyWith会在绑定之前将body存储到上下文中。 这会对性能造成轻微影响，如果调用一次就能完成绑定的话，那就不要用这个方法。
+只有某些格式需要此功能 ，如JSON、XML、MsgPack、ProtoBuf。 对于其他格式，如Query、Form、FormPost、FormMultipart可以多次调用c.ShouldBind()而不会造成任任何性能损失
+
+测试多绑定:必须是json格式才可以
+{
+	"name":     "李长全",
+	"password": "123"
+}
