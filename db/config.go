@@ -1,61 +1,86 @@
 package db
 
 import (
+	"errors"
 	"fmt"
+	"pencil/global"
+	p_logger "pencil/utils/log"
 
-	_ "github.com/go-sql-driver/mysql"
-	//"github.com/go-xorm/core"
-	//"github.com/go-xorm/xorm"
-	"github.com/spf13/viper"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
-/**
- * @desc    初始化mysql redis
- * @author Ipencil
- * @create 2019/2/27
- */
-func InitConfig(conKey string) {
-	viper.SetConfigType("yaml")
-	viper.SetConfigName("dbs")
-	viper.AddConfigPath("../pencil/config")
-	err := viper.ReadInConfig()
-	if err != nil {
-		panic(fmt.Errorf("Fatal error config file: %s \n", err))
-		return
-	}
-	subv := viper.Sub(conKey)
-	db_user := subv.Get("db_user")
-	db_home := subv.Get("db_home")
-	db_name := subv.Get("db_name")
-	db_pass := subv.Get("db_pass")
-	max_conn := subv.Get("max_conn")
-	max_open := subv.Get("max_open")
-	initDB(db_user, db_home, db_name, db_pass, max_conn, max_open)
+const (
+	DB_User = `user`
+)
+
+type mysql struct {
+	DataBaseUser *gorm.DB
+	DataBaseVIP  *gorm.DB
 }
 
-var g_dbHand []*xorm.Engine
+var (
+	MysqlService *mysql
+)
 
-func GetDBHand(nIndex int) *xorm.Engine {
-	return g_dbHand[nIndex%len(g_dbHand)]
+func init() {
+	MysqlService = new(mysql)
+	MysqlService.loadDataBase()
+}
+func (o *mysql) GetTransaction(db string) (*gorm.DB, error) {
+	switch db {
+	case DB_User:
+		return o.DataBaseUser.Begin(), nil
+
+	}
+	return nil, errors.New("db not exist")
 }
 
-func initDB(db_user, db_home, db_name, db_pass, max_conn, max_open interface{}) {
-	//root:root@tcp(127.0.0.1:3306)/test
-	strConn := fmt.Sprintf("%v:%v@tcp(%v:3306)/%v", db_user, db_pass, db_home, db_name)
-	fmt.Println(strConn)
-	//("mysql", "root:feidianDB*@#4@tcp(172.16.250.198:3306)/thp")
-	dbHand, err := xorm.NewEngine("mysql", strConn)
+func (o *mysql) loadDataBase() {
+	o.DataBaseVIP = CreateDB(global.GlobalConfig.Conf.DB.VIP.Username,
+		global.GlobalConfig.Conf.DB.VIP.Password,
+		global.GlobalConfig.Conf.DB.VIP.Host,
+		global.GlobalConfig.Conf.DB.VIP.Port,
+		global.GlobalConfig.Conf.DB.VIP.Database,
+		global.GlobalConfig.Conf.DB.VIP.LogMode,
+		global.GlobalConfig.Conf.DB.VIP.MaxIdleConns,
+		global.GlobalConfig.Conf.DB.VIP.MaxOpenConns,
+		global.GlobalConfig.Conf.DB.VIP.IsAutoMigrate)
+
+	o.DataBaseUser = CreateDB(global.GlobalConfig.Conf.DB.User.Username,
+		global.GlobalConfig.Conf.DB.User.Password,
+		global.GlobalConfig.Conf.DB.User.Host,
+		global.GlobalConfig.Conf.DB.User.Port,
+		global.GlobalConfig.Conf.DB.User.Database,
+		global.GlobalConfig.Conf.DB.User.LogMode,
+		global.GlobalConfig.Conf.DB.User.MaxIdleConns,
+		global.GlobalConfig.Conf.DB.User.MaxOpenConns,
+		global.GlobalConfig.Conf.DB.User.IsAutoMigrate)
+
+}
+
+func CreateDB(userName string, passWord string, host string, port uint32, dbName string, log_mode bool, max_idle_conns int, max_open_conns int, is_auto_migrate bool) *gorm.DB {
+	connStr := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=UTC",
+		userName,
+		passWord,
+		host,
+		port,
+		dbName,
+	)
+
+	db, err := gorm.Open("mysql", connStr)
 	if err != nil {
-		panic(fmt.Errorf("LIKE DB FAILED:%v\n", err))
-		return
+		panic("mysql conn fail," + host + ":" + dbName)
 	}
-	if err := dbHand.Ping(); err != nil {
-		panic(fmt.Errorf("DB PING FAILED:%v\n", err))
-		return
+	p_logger.Logger.Info(fmt.Sprintf("Connected to MySQL db : %s ,host : %s ,port: %d", dbName, host, port))
+	db.LogMode(log_mode)
+
+	db.DB().SetMaxIdleConns(max_idle_conns)
+	db.DB().SetMaxOpenConns(max_open_conns)
+	//db.DB().SetConnMaxLifetime(time.Duration(config.MaxLifeTime) * time.Second)
+	if is_auto_migrate {
+		db.AutoMigrate()
 	}
-	dbHand.SetMapper(core.GonicMapper{})
-	dbHand.ShowSQL(true)
-	dbHand.SetMaxIdleConns(max_conn.(int))
-	dbHand.SetMaxOpenConns(max_open.(int))
-	g_dbHand = append(g_dbHand, dbHand)
+
+	return db
 }

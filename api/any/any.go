@@ -17,6 +17,7 @@ type Person struct {
 	Address string `form:"address"`
 }
 
+//get请求获取参数
 func StartPage(c *gin.Context) {
 	var person Person
 	if c.ShouldBindQuery(&person) == nil {
