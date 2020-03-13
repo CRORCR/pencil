@@ -10,7 +10,6 @@ import (
 
 const LICHANGQUAN = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6MCwiTmFtZSI6IuadjumVv-WFqCIsIlBhc3N3b3JkIjoiIiwiU2hhcmUiOiIxMjM0NTYiLCJJY29uIjoiIiwiZXhwIjoxNTYwNDE2MDU2LCJpc3MiOiJwZW5jaWwiLCJuYmYiOjE1NTI2NDAwNTZ9.uBqblo8ENAsf3yNyCUPw2oPIK5Pt98GPfkPp2ewgjJs`
 
-
 /**
  * @desc    所有的请求类型 测试
  * @author Ipencil

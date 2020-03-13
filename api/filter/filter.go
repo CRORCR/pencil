@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
+
 //在中间件中使用Goroutines
 //当在中间件或handler中启动新的Goroutines时，不能使用原始上下文，必须使用只读副本。
 //cCp := c.Copy()
@@ -27,7 +28,7 @@ func Logger() gin.HandlerFunc {
 
 		// after request
 		latency := time.Since(t)
-		fmt.Println("使用时间:",latency)
+		fmt.Println("使用时间:", latency)
 		status := c.Writer.Status()
 		fmt.Println(status) //返回的状态码:200
 	}
@@ -36,6 +37,6 @@ func Logger() gin.HandlerFunc {
 //返回之前走中间件
 func Filter(c *gin.Context) {
 	example := c.MustGet("example").(string)
-	fmt.Println("filter",example)
+	fmt.Println("filter", example)
 	c.JSON(http.StatusOK, gin.H{"result": "success"})
 }

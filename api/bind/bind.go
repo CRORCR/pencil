@@ -38,7 +38,7 @@ func BandJson(c *gin.Context) {
 // 如Query、Form、FormPost、FormMultipart可以多次调用c.ShouldBind()而不会造成任任何性能损失
 func BandJsonBind(c *gin.Context) {
 	user := &User{}
-	if err := c.ShouldBindBodyWith(user,binding.JSON); err != nil {
+	if err := c.ShouldBindBodyWith(user, binding.JSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

@@ -112,7 +112,6 @@ func postSendList(url string, params map[string][]string) string {
 	return string(bytes)
 }
 
-
 func postSend(url string, params map[string]string) string {
 	client := &http.Client{}
 	body := &bytes.Buffer{}

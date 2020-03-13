@@ -14,5 +14,5 @@ func TestGet(t *testing.T) {
 	t.Run("upload", upload)
 	t.Run("upload_more", upload_more)
 	t.Run("band", band)
-	t.Run("filter",filter)
+	t.Run("filter", filter)
 }
