@@ -49,17 +49,18 @@ func RouterGroupLogin() {
 	router := getRouter()
 	router.POST("/login", login.Login)
 }
+
 //中间件
 func RouterGroupFilter() {
 	router := getRouter()
 	router.Use(filter.Logger()) //加载中间件
-	router.GET("/filter",filter.Filter)
+	router.GET("/filter", filter.Filter)
 }
 
 //中间件
 func RouterGroupCookie() {
 	router := getRouter()
-	router.GET("/cook",cookie.Cookie)
+	router.GET("/cook", cookie.Cookie)
 }
 
 func RouterGroupIndex() {
@@ -83,9 +84,9 @@ func RouterGroupIndex() {
  */
 func RouterGroupBind() {
 	router := getRouter()
-	router.Any("/bind_json", bind.BandJson) //各种请求都可以支持,不支持多次序列化
+	router.Any("/bind_json", bind.BandJson)     //各种请求都可以支持,不支持多次序列化
 	router.POST("/bandbind", bind.BandJsonBind) //各种请求都可以支持,并且可以支持多次使用,多个if else
-	router.Any("/bind_xml", bind.BandXml)   //各种请求都可以支持
+	router.Any("/bind_xml", bind.BandXml)       //各种请求都可以支持
 	router.POST("/query", query.StartPage)
 	router.GET("/bookable", confirm.GetBookable)
 	router.GET("/anystart", any.StartPage)
@@ -111,10 +112,11 @@ func RouterGroupHello(name string) {
 	router.POST("/uploada", show.UploadAll)
 }
 
-func InitRoute() {
+func InitRoute() *gin.Engine {
 	//首先需要是生成一个Engine 这是gin的核心 默认带有Logger 和 Recovery 两个中间件
 	_router = gin.Default()
 	_router.Use(gin.Recovery()) //中间件,异常处理
+
 	//验证器先注册   confirm的时候,用了验证器
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		v.RegisterValidation("bookabledate", confirm.BookableDate) //存储是以map形式存的,存储在内存中
@@ -128,9 +130,10 @@ func InitRoute() {
 	//模板渲染
 	//_router.LoadHTMLGlob("templates/*")
 	_router.LoadHTMLGlob("templates/**/*")
+	return _router
 }
 
 /*
 http://localhost:8080/assets/doc.html  静态文件内容,可以随意访问
 
- */
+*/

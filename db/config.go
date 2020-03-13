@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/go-xorm/core"
-	"github.com/go-xorm/xorm"
+	//"github.com/go-xorm/core"
+	//"github.com/go-xorm/xorm"
 	"github.com/spf13/viper"
 )
 
