@@ -21,14 +21,14 @@ type User struct {
 //ShouldBind 绑定参数 不管是get还是post请求都可以,可以多次调用，多次调用有什么用？
 func BandJson(c *gin.Context) {
 	user := &User{}
-	if err := c.ShouldBind(user); err != nil {
+	if err := c.ShouldBindJSON(user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	fmt.Println("user1:", user)
 
 	user2 := &User{}
-	if err := c.ShouldBind(user2); err != nil {
+	if err := c.ShouldBindJSON(user2); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

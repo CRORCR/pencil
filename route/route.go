@@ -63,11 +63,16 @@ func GetInitRouter() *gin.Engine {
 	{
 		v2.Any("/bind_json", bind.BandJson)     //各种请求都可以支持,不支持多次序列化
 		v2.POST("/bandbind", bind.BandJsonBind) //各种请求都可以支持,并且可以支持多次使用,多个if else
-		v2.POST("/query", query.StartPage)
+		v2.Any("/query", query.StartPage)
 		v2.GET("/bookable", confirm.GetBookable)
 		v2.Any("/forms", form.FormHandler) //接收数组
 		router.SecureJsonPrefix("yoawo\n") //为所有返回json添加头信息
 	}
+
+	//此规则能够匹配/user/lcq这种格式，但不能匹配/user/李长全 不支持中文，而且也不能为空，否则404
+	router.GET("/users/:name", form.GetByName)
+	router.POST("/users/update", form.Update)
+	router.POST("/users/upload", form.UpLoad)
 
 	//加载自定义中间件
 	router.Use(filter.Logger())

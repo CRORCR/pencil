@@ -1,37 +1,133 @@
-gin可以将静态文件打包到可执行程序中
-
-般通过调用c.Request.Body方法绑定数据，但不能多次调用这个方法。(ShouldBind)
-为此，要想多次绑定，需要使用c.ShouldBindBodyWith.
-if errA := c.ShouldBindBodyWith(&objA, binding.JSON); errA == nil {
-    c.String(http.StatusOK, `the body should be formA`)
-} else if  errB := c.ShouldBindBodyWith(&objB, binding.JSON); errB == nil {
-    c.String(http.StatusOK, `the body should be formB JSON`)
-}
-c.ShouldBindBodyWith会在绑定之前将body存储到上下文中。 这会对性能造成轻微影响，如果调用一次就能完成绑定的话，那就不要用这个方法。
-只有某些格式需要此功能 ，如JSON、XML、MsgPack、ProtoBuf。 对于其他格式，如Query、Form、FormPost、FormMultipart可以多次调用c.ShouldBind()而不会造成任任何性能损失
-
-测试多绑定:必须是json格式才可以
-{
-	"name":     "李长全",
-	"password": "123"
-}
-
+*******************************************
 //get请求接收
-c.ShouldBind(user) //可以处理get请求，也可以处理post请求
-c.ShouldBindBodyWith(user, binding.JSON) //可以处理get请求，也可以处理post请求
 c.ShouldBindQuery(&b)
 
-//post请求接收
-c.ShouldBind(user) //可以处理get请求，也可以处理post请求
-c.ShouldBindBodyWith(user, binding.JSON) //可以处理get请求，也可以处理post请求
+*******************************************
+//可以处理get请求，也可以处理post请求
+c.ShouldBind(user)
+c.ShouldBindBodyWith(user, binding.JSON)
+c.ShouldBindJSON(user) //只能读取一遍
 
+*******************************************
 //数组接收
 type myForm struct {
 	Colors []string `form:"colors[]"`
 }
 
 c.ShouldBind(&myForm) //可以处理get请求，也可以处理post请求
-
+c.Bind(&myForm) //这种也可以，它会根据content-type自动推断是bind表单还是json的参数。
 //map接收
 user := c.PostFormMap("user")
 前端:key:user[李长全] value:123456
+*******************************************
+获得请求头
+ua := c.GetHeader("User-Agent")
+ct := c.GetHeader("Content-Type")
+设置请求头
+ua := c.Header("User-Agent","Mozilla/5.0")
+ct := c.Header("Content-Type","text/html; charset=utf-8")
+*******************************************
+1.路由分组
+router Group是为了将一些前缀相同的URL请求放在一起管理
+服务端接收的url如果需要分组的话
+group1 := router.Group("/g1")
+group1.GET("/read1", func10)
+group1.GET("/read2", func11)
+服务端的请求:
+resp,_ = http.Get("http://0.0.0.0:8888/g1/read1")
+resp,_ = http.Get("http://0.0.0.0:8888/g1/read2")
+
+2.静态文件服务
+可以向客户端展示本地的一些文件信息, 例如显示某路径下地文件. 服务端代码是:
+router := gin.Default()
+router.StaticFS("/showDir", http.Dir("."))
+router.Static("/files", "/bin")
+router.StaticFile("/image", "./assets/1.png")
+router.Run(":8888")
+//请求连接
+0.0.0.0:8888/showDir
+0.0.0.0:8888/files
+0.0.0.0:8888/image
+
+3.加载模板templates
+服务端:
+router := gin.Default()
+// 加载templates文件夹下所有的文件
+router.LoadHTMLGlob("templates/*") // 或者使用这种方法加载也是OK的: router.LoadHTMLFiles("templates/template1.html", "templates/template2.html")
+router.GET("/index", func(c *gin.Context) {
+    // 注意下面将gin.H参数传入index.tmpl中!也就是使用的是index.tmpl模板
+    c.HTML(http.StatusOK, "index.tmpl", gin.H{
+        "title": "GIN: 测试加载HTML模板",
+    })
+})
+router.Run(":8888")
+
+客户端:直接调用index
+func main() {
+    // 测试加载HTML模板
+    resp,_ = http.Get("http://0.0.0.0:8888/index")
+    helpRead(resp)
+}
+模板样式:
+<html>
+    <h1>
+       { { .title } }
+    </h1>
+</html>
+*******************************************
+重定向
+func main(){
+    router := gin.Default()
+    router.GET("/redirect", func(c *gin.Context) {
+        c.Redirect(http.StatusMovedPermanently, "http://shanshanpt.github.io/")
+    })
+    router.Run(":8888")
+}
+当我们请求http://0.0.0.0:8888/redirect的时候, 会重定向到http://shanshanpt.github.io/这个站点.
+*******************************************
+绑定http server
+方法一: router.Run(":8888")  开始执行监听
+方法二: http.ListenAndServe(":8888", router)
+方法三:
+server := &http.Server{
+    Addr:           ":8888",
+    Handler:        router,
+    ReadTimeout:    10 * time.Second,
+    WriteTimeout:   10 * time.Second,
+    MaxHeaderBytes: 1 << 20,
+}
+server.ListenAndServe()
+*******************************************
+使用gin的Default方法创建一个路由handler。然后通过HTTP方法绑定路由规则和路由函数。
+gin封装net/http库，把request和response都封装到gin.Context的上下文环境。
+最后是启动路由的Run方法监听端口。gin支持GET,POST,PUT,DELETE,OPTION等常用的restful方法。
+*******************************************
+
+
+//case 检查需要哪种解析方式
+contentType := c.Request.Header.Get("Content-Type")
+switch contentType {
+case "application/json":
+    err = c.BindJSON(&user)
+case "application/x-www-form-urlencoded":
+    err = c.BindWith(&user, binding.Form)
+}
+
+*******************************************
+中间件
+golang的net/http设计的一大特点就是特别容易构建中间件。
+中间件只对注册过的路由函数起作用。对于分组路由，嵌套使用中间件，可以限定中间件的作用范围。
+中间件分为全局中间件，单个路由中间件和群组中间件。
+gin.Default() 默认是加载了一些框架内置的中间件的，而 gin.New() 则没有，根据需要自己手动加载中间件
+*******************************************
+// 创建一个不包含中间件的路由器
+r := gin.New()
+// 全局中间件
+// 使用 Logger 中间件
+r.Use(gin.Logger())
+
+// 使用 Recovery 中间件
+r.Use(gin.Recovery())
+
+// 路由添加中间件，可以添加任意多个
+r.GET("/benchmark", MyBenchLogger(), benchEndpoint)
