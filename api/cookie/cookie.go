@@ -7,7 +7,7 @@ import (
 )
 
 /**
- * @desc    TODO
+ * @desc    http://localhost:8000/api/pencil/cook
  * @author Ipencil
  * @create 2019/3/18
  */

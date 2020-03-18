@@ -1,6 +1,7 @@
 package login
 
 import (
+	"fmt"
 	"net/http"
 	"pencil/lib"
 	"strings"
@@ -11,17 +12,22 @@ import (
 )
 
 /**
- * @desc    登录,jwt
+ * @desc http://localhost:8000/api/pencil/login
+ *	body-type:x-www-form-urlencoded
+ *	key:user[李长全] value:123456
  * @author Ipencil
  * @create 2019/3/15
  */
 func Login(c *gin.Context) {
 	user := c.PostFormMap("user")
+	fmt.Println(user)
 	for name, password := range user {
 		if len(name) == 0 || len(password) == 0 {
 			c.JSON(http.StatusOK, gin.H{"result": "用户名密码不得为空", "error": "参数异常"})
 			return
 		}
+		fmt.Println(strings.EqualFold(name, "李长全"), name)
+		fmt.Println(strings.EqualFold(password, "123456"), password)
 		if strings.EqualFold(name, "李长全") && strings.EqualFold(password, "123456") {
 			//生成令牌
 			createJwt(c, name, password)

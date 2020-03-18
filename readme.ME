@@ -15,3 +15,23 @@ c.ShouldBindBodyWith会在绑定之前将body存储到上下文中。 这会对�
 	"name":     "李长全",
 	"password": "123"
 }
+
+//get请求接收
+c.ShouldBind(user) //可以处理get请求，也可以处理post请求
+c.ShouldBindBodyWith(user, binding.JSON) //可以处理get请求，也可以处理post请求
+c.ShouldBindQuery(&b)
+
+//post请求接收
+c.ShouldBind(user) //可以处理get请求，也可以处理post请求
+c.ShouldBindBodyWith(user, binding.JSON) //可以处理get请求，也可以处理post请求
+
+//数组接收
+type myForm struct {
+	Colors []string `form:"colors[]"`
+}
+
+c.ShouldBind(&myForm) //可以处理get请求，也可以处理post请求
+
+//map接收
+user := c.PostFormMap("user")
+前端:key:user[李长全] value:123456

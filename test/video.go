@@ -24,7 +24,7 @@ func upload(t *testing.T) {
 	client := &http.Client{}
 	params := map[string]string{}
 
-	upurl := "http://localhost:8080/pencil/upload"
+	upurl := "http://localhost:8000/pencil/upload"
 	request, e := newfileUploadRequest(upurl, params)
 	if e != nil {
 		fmt.Println("error", e)
@@ -43,7 +43,7 @@ func upload_more(t *testing.T) {
 	client := &http.Client{}
 	params := map[string]string{}
 
-	upurl := "http://localhost:8080/pencil/uploada"
+	upurl := "http://localhost:8000/pencil/uploada"
 	request, e := newfileUploadRequest(upurl, params)
 	if e != nil {
 		fmt.Println("error", e)

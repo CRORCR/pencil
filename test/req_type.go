@@ -30,7 +30,7 @@ func reqType(t *testing.T) {
 
 func any_start(t *testing.T) {
 	t.SkipNow()
-	url := "http://localhost:8080/anystart?name=李长全&address=安徽" //填空没有默认值
+	url := "http://localhost:8000/anystart?name=李长全&address=安徽" //填空没有默认值
 	result := queryGet(t, url)
 	fmt.Println(result)
 }
@@ -42,7 +42,7 @@ func any_start(t *testing.T) {
  */
 func login(t *testing.T) {
 	t.SkipNow()
-	url := "http://localhost:8080/login" //填空没有默认值
+	url := "http://localhost:8000/login" //填空没有默认值
 	params := map[string]string{
 		"user[李长全]": "123456",
 	}
@@ -52,14 +52,14 @@ func login(t *testing.T) {
 
 func get(t *testing.T) {
 	t.SkipNow()
-	url := "http://localhost:8080/pencil/show?lastname=nht&pri[2]=3&list=[1,2,3,4]" //填空没有默认值
+	url := "http://localhost:8000/pencil/show?lastname=nht&pri[2]=3&list=[1,2,3,4]" //填空没有默认值
 	result := queryGet(t, url)
 	fmt.Println(result)
 }
 
 func somePost(t *testing.T) {
 	t.SkipNow()
-	url := "http://localhost:8080/pencil/somePost"
+	url := "http://localhost:8000/pencil/somePost"
 	params := map[string]string{
 		"message": "222",
 		"nick":    "", //这种形式也算有值,不会填充默认值
@@ -73,7 +73,7 @@ func somePost(t *testing.T) {
 
 func put(t *testing.T) {
 	t.SkipNow()
-	url := "http://localhost:8080/pencil/somePut" //填空没有默认值
+	url := "http://localhost:8000/pencil/somePut" //填空没有默认值
 	client := &http.Client{}
 	result := puts(t, client, url)
 	fmt.Println(result)
@@ -81,7 +81,7 @@ func put(t *testing.T) {
 
 func patch(t *testing.T) {
 	t.SkipNow()
-	url := "http://localhost:8080/pencil/somePatch" //填空没有默认值
+	url := "http://localhost:8000/pencil/somePatch" //填空没有默认值
 	client := &http.Client{}
 	result := patchs(t, client, url)
 	fmt.Println(result)
@@ -89,7 +89,7 @@ func patch(t *testing.T) {
 
 func delete(t *testing.T) {
 	t.SkipNow()
-	url := "http://localhost:8080/pencil/someDelete" //填空没有默认值
+	url := "http://localhost:8000/pencil/someDelete" //填空没有默认值
 	client := &http.Client{}
 	result := deletes(t, client, url)
 	fmt.Println(result)
@@ -97,14 +97,14 @@ func delete(t *testing.T) {
 
 func head(t *testing.T) {
 	t.SkipNow()
-	url := "http://localhost:8080/pencil/someHead" //填空没有默认值
+	url := "http://localhost:8000/pencil/someHead" //填空没有默认值
 	client := &http.Client{}
 	heads(t, client, url)
 }
 
 func someOptions(t *testing.T) {
 	t.SkipNow()
-	url := "http://localhost:8080/pencil/someOptions" //填空没有默认值
+	url := "http://localhost:8000/pencil/someOptions" //填空没有默认值
 	client := &http.Client{}
 	result := option(t, client, url)
 	fmt.Println(result)

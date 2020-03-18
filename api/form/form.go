@@ -15,6 +15,7 @@ type myForm struct {
 	Colors []string `form:"colors[]"`
 }
 
+//接收数组
 func FormHandler(c *gin.Context) {
 	var fakeForm myForm
 	err := c.ShouldBind(&fakeForm)

@@ -17,7 +17,7 @@ import (
 type Person struct {
 	Name     string    `xml:"name" form:"name"`
 	Address  string    `xml:"address" form:"address"`
-	Birthday time.Time `xml:"birthday" form:"birthday" time_format:"2006-01-02 03:04:05" time_local:"8"`
+	Birthday time.Time `xml:"birthday" form:"birthday" time_format:"2006-01-02 15:04:05" time_local:"8"`
 }
 
 func StartPage(c *gin.Context) {
@@ -26,14 +26,18 @@ func StartPage(c *gin.Context) {
 	//xml 解析
 	if strings.Contains(content, "xml") {
 		if err := c.BindXML(&person); err == nil {
-			fmt.Printf("XML: name:%v address:%v birthday:%v\n", person.Name, person.Address, person.Birthday)
+			c.JSON(http.StatusOK, gin.H{"result": fmt.Sprintf("XML: name[%v] address[%v] birthday[%v]", person.Name, person.Address, person.Birthday), "error": nil})
+		} else {
+			c.JSON(http.StatusOK, gin.H{"result": "", "error": err})
 		}
 	} else if strings.Contains(content, "form-data") { //json格式
 		if err := c.ShouldBind(&person); err == nil {
-			fmt.Printf("JSON: name:%v address:%v birthday:%v\n", person.Name, person.Address, person.Birthday)
+			c.JSON(http.StatusOK, gin.H{"result": fmt.Sprintf("form: name[%v] address[%v] birthday[%v]", person.Name, person.Address, person.Birthday), "error": nil})
+		} else {
+			c.JSON(http.StatusOK, gin.H{"result": "", "error": err})
 		}
 	} else {
-		c.JSON(http.StatusOK, gin.H{"result": "类型错误", "error": "content error"})
+		c.JSON(http.StatusOK, gin.H{"result": "", "error": "not found type"})
 	}
 	return
 }

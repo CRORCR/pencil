@@ -20,7 +20,7 @@ func filter(t *testing.T) {
 func filterPrint(t *testing.T) {
 	t.SkipNow()
 	/*get 请求*/
-	url := "http://localhost:8080/filter" //填空没有默认值
+	url := "http://localhost:8000/filter" //填空没有默认值
 	result := queryGet(t, url)
 	fmt.Println(result)
 }
@@ -29,7 +29,7 @@ func filterPrint(t *testing.T) {
 func cook(t *testing.T) {
 	//t.SkipNow()
 	/*get 请求*/
-	url := "http://localhost:8080/cook" //填空没有默认值
+	url := "http://localhost:8000/cook" //填空没有默认值
 	result := queryGet(t, url)
 	fmt.Println(result)
 }

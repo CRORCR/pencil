@@ -36,21 +36,25 @@ func Posting(c *gin.Context) {
 	return
 }
 
+//http://localhost:8000/api/pencil/somePut
 func Putting(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"result": "hello world", "error": nil})
 	return
 }
 
+//http://localhost:8000/api/pencil/somePatch
 func Patching(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"result": "hello world", "error": nil})
 	return
 }
 
+//http://localhost:8000/api/pencil/someDelete
 func Deleting(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"result": "hello world", "error": nil})
 	return
 }
 
+//http://localhost:8000/api/pencil/someOptions
 func Options(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"result": "hello world", "error": nil})
 	return

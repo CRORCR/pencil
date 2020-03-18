@@ -1,6 +1,7 @@
 package bind
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -17,13 +18,22 @@ type User struct {
 	Password string `xml:"password" form:"password"  json:"password"`
 }
 
-//绑定参数,需要加锁form,不管是get还是post请求都可以,不能多次调用
+//ShouldBind 绑定参数 不管是get还是post请求都可以,可以多次调用，多次调用有什么用？
 func BandJson(c *gin.Context) {
 	user := &User{}
 	if err := c.ShouldBind(user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	fmt.Println("user1:", user)
+
+	user2 := &User{}
+	if err := c.ShouldBind(user2); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	fmt.Println("user2:", user2)
+
 	if user.Name != "李长全" || user.Password != "123" {
 		c.JSON(http.StatusUnauthorized, gin.H{"status": "unauthorized"})
 		return
@@ -47,15 +57,4 @@ func BandJsonBind(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"result": user})
-}
-
-//绑定xml解析
-func BandXml(c *gin.Context) {
-	user := &User{}
-	if err := c.BindXML(user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"bindXML:error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"result": user})
-	return
 }

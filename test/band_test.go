@@ -20,7 +20,7 @@ xml格式数据和json格式数据传递的时候,可以通过 Content-Type 检�
  * @author Ipencil
  * @create 2019/3/16
  */
-func band(t *testing.T) {
+func TestBand(t *testing.T) {
 	//t.SkipNow()
 	t.Run("band_json", band_json)           //json解析的接口,get和post使用同一个,都支持,使用Any请求方式
 	t.Run("band_json_post", band_json_post) //支持get和post方式
@@ -36,7 +36,7 @@ func band(t *testing.T) {
 func someJSON(t *testing.T) {
 	t.SkipNow()
 	/*get 请求*/
-	url := "http://localhost:8080/someJSON" //填空没有默认值
+	url := "http://localhost:8000/someJSON" //填空没有默认值
 	result := queryGet(t, url)
 	fmt.Println(result)
 }
@@ -44,7 +44,7 @@ func someJSON(t *testing.T) {
 //json客户端发送数据  数组发送,一般复选框能够用上
 func forms(t *testing.T) {
 	t.SkipNow()
-	url := "http://localhost:8080/forms"
+	url := "http://localhost:8000/forms"
 	params := map[string][]string{
 		"colors[]": {
 			"wo", "ai", "ni",
@@ -57,7 +57,7 @@ func forms(t *testing.T) {
 //json客户端发送数据
 func queryJson(t *testing.T) {
 	t.SkipNow()
-	url := "http://localhost:8080/query"
+	url := "http://localhost:8000/query"
 	params := map[string]string{
 		"name":     "李长全",
 		"address":  "123",
@@ -70,7 +70,7 @@ func queryJson(t *testing.T) {
 //json客户端发送数据
 func queryXML(t *testing.T) {
 	t.SkipNow()
-	url := "http://localhost:8080/query"
+	url := "http://localhost:8000/query"
 	per := query.Person{}
 	per.Name = "lcq"
 	per.Address = "123"
@@ -83,7 +83,7 @@ func queryXML(t *testing.T) {
 func band_json(t *testing.T) {
 	t.SkipNow()
 	/*get 请求*/
-	url := "http://localhost:8080/bind_json?name=李长全&password=123" //填空没有默认值
+	url := "http://localhost:8000/bind_json?name=李长全&password=123" //填空没有默认值
 	result := queryGet(t, url)
 	fmt.Println(result)
 }
@@ -91,7 +91,7 @@ func band_json(t *testing.T) {
 /*post 请求*/
 func band_json_post(t *testing.T) {
 	t.SkipNow()
-	url := "http://localhost:8080/bind_json"
+	url := "http://localhost:8000/bind_json"
 	params := map[string]string{
 		"name":     "李长全",
 		"password": "123", //这种形式也算有值,不会填充默认值
@@ -103,7 +103,7 @@ func band_json_post(t *testing.T) {
 //xml 客户端发送数据
 func band_xml(t *testing.T) {
 	t.SkipNow()
-	url := "http://localhost:8080/bind_xml"
+	url := "http://localhost:8000/bind_xml"
 	user := bind.User{}
 	user.Name = "lcq"
 	user.Password = "123"
@@ -114,7 +114,7 @@ func band_xml(t *testing.T) {
 //自定义验证器
 func books(t *testing.T) {
 	t.SkipNow()
-	url := "http://localhost:8080/bookable?check_in=2019-04-16&check_out=2019-04-17" //填空没有默认值
+	url := "http://localhost:8000/bookable?check_in=2019-04-16&check_out=2019-04-17" //填空没有默认值
 	result := queryGet(t, url)
 	fmt.Println(result)
 }
