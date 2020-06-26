@@ -1,7 +1,9 @@
 package query
 
 import (
+	"bytes"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strings"
 	"time"
@@ -40,4 +42,33 @@ func StartPage(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"result": "", "error": "not found type"})
 	}
 	return
+}
+
+//获取body的值
+//ioutil.ReadAll(response.Body)
+//curl -X POST "http://localhost:8000/api/bind/body" -d "{"name":"hello"}"
+func GetBody(c *gin.Context) {
+	bytes, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(string(bytes))
+	c.JSON(200, gin.H{"message": "succeed"})
+}
+
+//curl -X POST "http://localhost:8000/api/bind/body2" -d "name=lcq&age=30"
+//使用readall之后，会把数据都读出来，后续其他的获取参数就拿不到值了，怎么解决？
+func GetBody2(c *gin.Context) {
+	result, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(string(result))
+
+	//解决办法：再把body写回去就好了
+	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(result))
+	name := c.PostForm("name")
+	age := c.PostForm("age")
+	fmt.Println("postForm值:", name, age)
+	c.JSON(200, gin.H{"message": "succeed2"})
 }

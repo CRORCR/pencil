@@ -29,15 +29,12 @@ func FormHandler(c *gin.Context) {
 	c.JSON(200, gin.H{"color": fakeForm.Colors})
 }
 
-// 此规则能够匹配/user/john这种格式，但不能匹配/user/ 或 /user这种格式
-func GetByName(c *gin.Context) {
+//使用url作为参数传递
+//curl -X GET "http://localhost:8000/users/lcq/30"
+func GetNameAndAge(c *gin.Context) {
 	name := c.Param("name")
-	age := c.Query("age")
+	age := c.Param("age")
 	fmt.Println("name:", name, "age:", age)
-
-	// c.Query 相当于 c.Request.URL.Query().Get("age") 的简写
-	//name = c.DefaultQuery("name", "hello") //设置默认值获取
-
 	fmt.Printf("get请求参数获取成功 name[%v] age[%v]", name, age)
 	c.String(http.StatusOK, "Hello [%v] [%v]", name, age)
 }

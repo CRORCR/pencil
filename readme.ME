@@ -1,7 +1,9 @@
 *******************************************
+c.Query 相当于 c.Request.URL.Query().Get("age") 的简写
+name = c.DefaultQuery("name", "hello") //设置默认值获取
+*******************************************
 //get请求接收
 c.ShouldBindQuery(&b)
-
 *******************************************
 //可以处理get请求，也可以处理post请求
 c.ShouldBind(user)
@@ -131,3 +133,7 @@ r.Use(gin.Recovery())
 
 // 路由添加中间件，可以添加任意多个
 r.GET("/benchmark", MyBenchLogger(), benchEndpoint)
+*******************************************
+优雅关停
+在服务器停止，部分请求未处理完毕，会有一个等待时间，保证服务不会暴力停止
+

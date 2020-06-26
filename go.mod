@@ -10,3 +10,5 @@ require (
 	github.com/stretchr/testify v1.4.0
 	gopkg.in/go-playground/validator.v8 v8.18.2
 )
+
+go 1.13

@@ -2,6 +2,7 @@ package route
 
 import (
 	"net/http"
+	"pencil/lib"
 
 	"pencil/api/bind"
 	"pencil/api/confirm"
@@ -12,7 +13,6 @@ import (
 	"pencil/api/login"
 	"pencil/api/query"
 	"pencil/api/show"
-	"pencil/lib"
 	"strings"
 	"time"
 
@@ -34,7 +34,7 @@ const routerV2 = "/api/bind"
 func GetInitRouter() *gin.Engine {
 	//首先需要是生成一个Engine 这是gin的核心 默认带有Logger 和 Recovery 两个中间件
 	router := gin.Default()
-	//中间件
+	//中间件 Use设置中间件
 	router.Use(cors.New(cors.Config{
 		AllowMethods:     []string{"*"},
 		AllowHeaders:     []string{"*", "lang", "json-web-token"},
@@ -46,16 +46,23 @@ func GetInitRouter() *gin.Engine {
 	{
 		bindMethod(v1, "POST", "/login", login.Login) //接收map
 		bindMethod(v1, "GET", "/cook", cookie.Cookie)
-		v1.Use(lib.JWTAuth())
+
 		v1.PUT("/somePut", show.Putting)
 		v1.PATCH("/somePatch", show.Patching)
 		v1.DELETE("/someDelete", show.Deleting)
 		v1.HEAD("/someHead", show.Head) //不好使
 		v1.OPTIONS("/someOptions", show.Options)
+
+		v1.Use(lib.JWTAuth())
 		bindMethod(v1, "GET", "/show", show.Show)
 		bindMethod(v1, "POST", "/uploada", show.UploadAll)
 		bindMethod(v1, "POST", "/upload", show.UploadOne)
 		bindMethod(v1, "POST", "/somePost", show.Posting)
+	}
+
+	//验证器先注册   confirm的时候,用了验证器，现在没有成功，后面再看看吧
+	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+		v.RegisterValidation("bookabledate", confirm.BookableDate) //存储是以map形式存的,存储在内存中
 	}
 
 	//测试各种绑定
@@ -64,13 +71,15 @@ func GetInitRouter() *gin.Engine {
 		v2.Any("/bind_json", bind.BandJson)     //各种请求都可以支持,不支持多次序列化
 		v2.POST("/bandbind", bind.BandJsonBind) //各种请求都可以支持,并且可以支持多次使用,多个if else
 		v2.Any("/query", query.StartPage)
+		v2.POST("/body", query.GetBody)
+		v2.POST("/body2", query.GetBody2)
 		v2.GET("/bookable", confirm.GetBookable)
 		v2.Any("/forms", form.FormHandler) //接收数组
 		router.SecureJsonPrefix("yoawo\n") //为所有返回json添加头信息
 	}
 
-	//此规则能够匹配/user/lcq这种格式，但不能匹配/user/李长全 不支持中文，而且也不能为空，否则404
-	router.GET("/users/:name", form.GetByName)
+	//此规则能够匹配/user/lcq/30这种格式，但不能匹配/user/李长全/30 不支持中文，而且也不能为空，否则404
+	router.GET("/users/:name/:age", form.GetNameAndAge)
 	router.POST("/users/update", form.Update)
 	router.POST("/users/upload", form.UpLoad)
 
@@ -88,11 +97,6 @@ func GetInitRouter() *gin.Engine {
 			router.HandleContext(c)
 		})
 	router.GET("/hello", index.Hello) //内部重定向到/hello路由去处理
-
-	//验证器先注册   confirm的时候,用了验证器
-	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
-		v.RegisterValidation("bookabledate", confirm.BookableDate) //存储是以map形式存的,存储在内存中
-	}
 
 	//这些目录下资源是可以随时更新，而不用重新启动程序
 	router.Static("/assets", "./assets")

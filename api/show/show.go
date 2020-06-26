@@ -9,7 +9,7 @@ import (
 )
 
 /**
- * @desc    get及post解析参数,默认值,map,数组获取
+ * @desc   get及post解析参数,默认值,map,数组获取
  * @author Ipencil
  * @create 2019/3/14
  */
@@ -36,9 +36,9 @@ func Posting(c *gin.Context) {
 	return
 }
 
-//http://localhost:8000/api/pencil/somePut
+//curl -X PUT http://localhost:8000/api/pencil/somePut
 func Putting(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"result": "hello world", "error": nil})
+	c.JSON(http.StatusOK, gin.H{"result": "hello world-put", "error": nil})
 	return
 }
 
