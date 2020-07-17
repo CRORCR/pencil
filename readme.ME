@@ -22,6 +22,22 @@ c.Bind(&myForm) //这种也可以，它会根据content-type自动推断是bind�
 user := c.PostFormMap("user")
 前端:key:user[李长全] value:123456
 *******************************************
+json格式请求，也可以这样序列化
+var tradeCurrency = make(map[string]interface{})
+	//err := ctx.BindJSON(&tradeCurrency)
+	request := make([]byte, 2048)
+	n, err := ctx.Request.Body.Read(request)
+
+	if err != nil && err != io.EOF {
+		ctx.JSON(http.StatusUnprocessableEntity, gin.H{
+			"code":    http.StatusUnprocessableEntity,
+			"message": fmt.Sprintf("参数异常:%s", err.Error()),
+		})
+		return
+	}
+
+	err = json.Unmarshal(request[:n], &tradeCurrency)
+*******************************************
 获得请求头
 ua := c.GetHeader("User-Agent")
 ct := c.GetHeader("Content-Type")
